@@ -89,7 +89,6 @@ describe('todo test suite', () => {
     });
     const resp = await agent.delete(`/api/v1/todos/${data.id}`);
     expect(resp.status).toBe(200);
-    expect(resp.body).not.toHaveProperty('name', 'This should not be here');
   });
   afterAll(() => {
     pool.end();
