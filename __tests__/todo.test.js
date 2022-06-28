@@ -37,7 +37,8 @@ describe('todo test suite', () => {
     expect(data.body).toEqual({
       id: expect.any(String),
       name: 'Get milk',
-      user_id: expect.any(Number),
+      user_id: expect.any(String),
+      completed: false,
     });
   });
 
@@ -59,15 +60,19 @@ describe('todo test suite', () => {
     expect(data.body).toEqual([testData]);
   });
 
+  it('Test to be denied if not logged in', async () => {});
+
   it('Test to update todo associated with authenticated user', async () => {
     const [agent, user] = await LoggedIn();
     const data = await Todo.insert({
       name: 'Save the world',
       user_id: user.id,
     });
+    // console.log(data);
     const resp = await agent
-      .put(`/api/v1/todos${data.id}`)
+      .put(`/api/v1/todos/${data.id}`)
       .send({ name: 'Whoops :(' });
+    console.log('resp', resp.body);
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual({ ...data, name: 'Whoops :(' });
   });

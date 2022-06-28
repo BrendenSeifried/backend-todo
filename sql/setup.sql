@@ -13,5 +13,5 @@ CREATE TABLE todos (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR NOT NULL,
     completed BOOLEAN NOT NULL DEFAULT(false), 
-    user_id INT NOT NULL
+    user_id BIGINT NOT NULL
 );
