@@ -68,10 +68,8 @@ describe('todo test suite', () => {
     const resp = await agent
       .put(`/api/v1/todos${data.id}`)
       .send({ name: 'Whoops :(' });
-    expect(resp.status)
-      .toEqual(200)
-      .expect(resp.body)
-      .toEqual({ ...data, name: 'Whoops :(' });
+    expect(resp.status).toEqual(200);
+    expect(resp.body).toEqual({ ...data, name: 'Whoops :(' });
   });
   afterAll(() => {
     pool.end();
