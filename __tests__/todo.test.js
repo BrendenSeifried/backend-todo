@@ -32,7 +32,7 @@ describe('todo test suite', () => {
   it('Test to create new todo', async () => {
     const [agent] = await LoggedIn();
     const item = { name: 'Get milk' };
-    const data = await agent.post('/api/v1/todos').send(item);
+    const data = await agent.post('/api/v1/todos/').send(item);
     expect(data.status).toEqual(200);
     expect(data.body).toEqual({
       id: expect.any(String),
@@ -57,6 +57,21 @@ describe('todo test suite', () => {
     const data = await agent.get('/api/v1/todos');
     expect(data.status).toEqual(200);
     expect(data.body).toEqual([testData]);
+  });
+
+  it('Test to update todo associated with authenticated user', async () => {
+    const [agent, user] = await LoggedIn();
+    const data = await Todo.insert({
+      name: 'Save the world',
+      user_id: user.id,
+    });
+    const resp = await agent
+      .put(`/api/v1/todos${data.id}`)
+      .send({ name: 'Whoops :(' });
+    expect(resp.status)
+      .toEqual(200)
+      .expect(resp.body)
+      .toEqual({ ...data, name: 'Whoops :(' });
   });
   afterAll(() => {
     pool.end();
