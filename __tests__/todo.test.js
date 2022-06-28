@@ -60,7 +60,10 @@ describe('todo test suite', () => {
     expect(data.body).toEqual([testData]);
   });
 
-  it('Test to be denied if not logged in', async () => {});
+  it('Test to be denied in the .get if not logged in', async () => {
+    const data = await request(app).get('/api/v1/todos');
+    expect(data.status).toEqual(401);
+  });
 
   it('Test to update todo associated with authenticated user', async () => {
     const [agent, user] = await LoggedIn();
