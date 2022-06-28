@@ -11,7 +11,7 @@ const testUser = {
 };
 
 const secondtestUser = {
-  email: 'test@example.com',
+  email: 'testtwo@example.com',
   password: '12345678',
 };
 
@@ -39,23 +39,24 @@ describe('todo test suite', () => {
       name: 'Get milk',
       user_id: expect.any(Number),
     });
+  });
 
-    it('Test to render list of todos for logged in user', async () => {
-      const [agent, user] = await LoggedIn();
-      const testingClient = await UserService.create(secondtestUser);
-      const testData = await Todo.insert({
-        name: 'Water the cat',
-        user_id: user.id,
-        completed: true,
-      });
-      await Todo.insert({
-        name: 'Eat the right amount',
-        user_id: testingClient.id,
-      });
-      const data = await agent.get('/api/v1/todos');
-      expect(data.status).toEqual(200);
-      expect(data.body).toEqual([testData]);
+  it('Test to render list of todos for logged in user', async () => {
+    const [agent, user] = await LoggedIn();
+    const testingClient = await UserService.create(secondtestUser);
+    const testData = await Todo.insert({
+      name: 'Water the cat',
+      user_id: user.id,
+      completed: true,
     });
+    await Todo.insert({
+      name: 'Eat the right amount',
+      user_id: testingClient.id,
+      completed: false,
+    });
+    const data = await agent.get('/api/v1/todos');
+    expect(data.status).toEqual(200);
+    expect(data.body).toEqual([testData]);
   });
   afterAll(() => {
     pool.end();
