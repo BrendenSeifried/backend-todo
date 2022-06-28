@@ -67,14 +67,15 @@ describe('todo test suite', () => {
     const data = await Todo.insert({
       name: 'Save the world',
       user_id: user.id,
+      completed: true,
     });
     // console.log(data);
     const resp = await agent
       .put(`/api/v1/todos/${data.id}`)
-      .send({ name: 'Whoops :(' });
+      .send({ name: 'Whoops :(', completed: false });
     console.log('resp', resp.body);
     expect(resp.status).toEqual(200);
-    expect(resp.body).toEqual({ ...data, name: 'Whoops :(' });
+    expect(resp.body).toEqual({ ...data, name: 'Whoops :(', completed: false });
   });
   afterAll(() => {
     pool.end();
