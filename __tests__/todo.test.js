@@ -89,6 +89,9 @@ describe('todo test suite', () => {
     });
     const resp = await agent.delete(`/api/v1/todos/${data.id}`);
     expect(resp.status).toBe(200);
+
+    const confirmed = await Todo.getById(data.id);
+    expect(confirmed).toBeNull();
   });
   afterAll(() => {
     pool.end();
