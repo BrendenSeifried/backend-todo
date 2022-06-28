@@ -72,7 +72,6 @@ describe('todo test suite', () => {
       user_id: user.id,
       completed: true,
     });
-    // console.log(data);
     const resp = await agent
       .put(`/api/v1/todos/${data.id}`)
       .send({ name: 'Whoops :(', completed: false });
