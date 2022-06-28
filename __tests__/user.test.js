@@ -6,7 +6,7 @@ const UserService = require('../lib/services/UserServices');
 
 const testUser = {
   email: 'test@example.com',
-  password: '1234567',
+  password: '12345678',
 };
 
 const Loggedin = async (props = {}) => {
