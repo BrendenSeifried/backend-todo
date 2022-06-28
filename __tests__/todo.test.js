@@ -4,6 +4,11 @@ const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserServices');
 
+const testUser = {
+  email: 'test@example.com',
+  password: '12345678',
+};
+
 const LoggedIn = async (props = {}) => {
   const password = props.password ?? testUser.password;
   const agent = request.agent(app);
@@ -19,14 +24,13 @@ describe('todo test suite', () => {
     return setup(pool);
   });
   it('Test to create new todo', async () => {
-    const [agent, user] = await LoggedIn();
+    const [agent] = await LoggedIn();
     const item = { name: 'Get milk' };
     const data = await agent.post('/api/v1/todos').send(item);
     expect(data.status).toEqual(200);
     expect(data.body).toEqual({
       id: expect.any(String),
       name: 'Get milk',
-      completed: false,
       user_id: expect.any(Number),
     });
   });
