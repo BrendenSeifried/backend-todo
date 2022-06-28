@@ -13,9 +13,7 @@ describe('User auth tests', () => {
     return setup(pool);
   });
   it('Test that new user is made', async () => {
-    const resp = await (
-      await request(app).post('/api/v1/users')
-    ).setEncoding(testUser);
+    const resp = await request(app).post('/api/v1/users').send(testUser);
     const { email } = testUser;
     expect(resp.body).toEqual({ id: expect.any(String), email });
   });
