@@ -80,6 +80,17 @@ describe('todo test suite', () => {
     expect(resp.status).toEqual(200);
     expect(resp.body).toEqual({ ...data, name: 'Whoops :(', completed: false });
   });
+
+  it('Test to confirm that logged in user can delete their own todo', async () => {
+    const [agent, user] = await LoggedIn();
+    const data = await Todo.insert({
+      name: 'This should not be here',
+      user_id: user.id,
+    });
+    const resp = await agent.delete(`/api/v1/todos/${data.id}`);
+    expect(resp.status).toBe(200);
+    expect(resp.body).not.toHaveProperty('name', 'This should not be here');
+  });
   afterAll(() => {
     pool.end();
   });
